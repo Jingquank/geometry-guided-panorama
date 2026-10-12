@@ -1,95 +1,102 @@
 ```text
-          .-----------------------------------------------.
-       .-'                                                 '-.
-      /       ____    _    _   _  ___                        \
-     |       |  _ \  / \  | \ | |/ _ \                        |
-     |       | |_) |/ _ \ |  \| | | | |                       |
-     |       |  __// ___ \| |\  | |_| |                       |
-     |       |_|  /_/   \_\_| \_|\___/                        |
-      \                                                     /
-       '-.       GEOMETRY-GUIDED  /  360 x 180           .-'
-          '-------------------[ + ]---------------------'
-                      ONE IMAGE. ALL AROUND.
+                          . :  Z E N I T H  : .
+                    .-'          |          '-.
+                 .-'             |             '-.
+    <-----------+----------------+----------------+----------->
+                |    ____   ___    _   __  ____    |
+                |   / __ \ /   |  / | / / / __ \   |
+                |  / /_/ // /| | /  |/ / / / / /   |
+                | / ____// ___ |/ /|  / / /_/ /    |
+                |/_/    /_/  |_/_/ |_/  \____/     |
+    <-----------+----------------+----------------+----------->
+                 '-.             |             .-'
+                    '-.          |          .-'
+                          ' :  N A D I R  : '
+
+                G E O M E T R Y - G U I D E D
+                  360 x 180  /  ALL AROUND
 ```
 
 # Geometry-Guided Panorama
 
-**把一张场景图扩展成可以环视的 360° 全景，尽量保留原图的样子。**
+**Turn a scene image into a 360° panorama while keeping the look and structure of the reference.**
 
-适用于室内、建筑、街道、山林等场景，也可以从文字开始创作，或检查已有全景中的变形。输出为 **2:1 的全景 PNG**，可以放入支持等距柱状投影的全景查看器。
+Use it for interiors, architecture, streets, forests, and other environments. You can also start from a text description or inspect an existing panorama for distortion. The output is a **2:1 panoramic PNG** for viewers that support equirectangular images.
 
-这是给 AI agent 使用的 skill，需要支持图像生成和本地脚本执行的环境。
+This is a skill for an AI agent with access to image generation and local script execution.
 
-## 1. 安装到项目
+## 1. Install it in your project
 
-把下面这句话发给你的 agent：
-
-```text
-请把 https://github.com/Jingquank/geometry-guided-panorama
-安装到当前项目的 .agents/skills/geometry-guided-panorama 目录。
-保留完整仓库中的 skill 文件和配套脚本；如果已有安装，先检查差异再更新。
-```
-
-环境需要 Python 3、NumPy、Pillow，以及支持 C++17 的编译器。图像生成由宿主环境提供，这个仓库不包含图像模型。让 agent 在开始前检查这些条件即可。
-
-## 2. 上传图片，说明你想保留什么
-
-在项目对话里选择 `geometry-guided-panorama`，附上参考图，再描述需求。例如：
+Send this to your agent:
 
 ```text
-使用 $geometry-guided-panorama，把这张参考图扩展成 360° 全景。
-保留原有结构、材质和光线，保守补全看不到的区域。
-完成全景验收后，交付一张 2:1 PNG。
+Install https://github.com/Jingquank/geometry-guided-panorama
+into .agents/skills/geometry-guided-panorama in the current project.
+Keep the complete skill package, including its scripts and supporting files.
+If it is already installed, review the differences before updating it.
 ```
 
-不用自己写复杂的投影参数。说明**哪些东西必须保留、哪些地方可以改变**就好；没有要求改变的部分，应以原图为准。
+The scripts need Python 3, NumPy, Pillow, and a C++17 compiler for geometry rendering. Image generation comes from your agent's environment; this repository does not include an image model. Ask your agent to check these requirements before starting.
 
-## 3. 实际生成示例：Before / After
+## 2. Add an image and say what to preserve
 
-以下是本项目实际使用的参考图与生成的全景 PNG。点击图片可以查看完整文件。它们来自此前的生成过程，不代表全部已通过最新版本的验收或下游 3D 重建。
+Select `geometry-guided-panorama` in your project conversation, attach a reference image, and describe what you want. For example:
 
-### Example 01 — 粉色酒店大堂
+```text
+Use $geometry-guided-panorama to expand this reference into a 360° panorama.
+Preserve the original structures, materials, and lighting.
+Complete unseen areas conservatively, following the reference.
+After inspecting the panorama, deliver one 2:1 PNG.
+```
 
-粉色墙面、拱窗与原有棋盘地面的全景扩展。
+You do not need to specify projection math. Just explain **what must stay and what may change**. Anything you have not asked to change should follow the reference.
 
-| Before · 原图 | After · 360° 全景 |
+## 3. Real examples: Before / After
+
+These are actual reference images and generated panoramas from this project. Click an image to open the full PNG. They were produced during earlier iterations and have not all been validated against the latest review process or a downstream 3D reconstruction workflow.
+
+### Example 01 — Pink Hotel Lobby
+
+A panorama expansion of the pink walls, arched windows, and existing checkerboard floor.
+
+| Before · Reference | After · 360° Panorama |
 | --- | --- |
-| [![粉色酒店大堂：原始参考图](assets/examples/pink-lobby-before.png)](assets/examples/pink-lobby-before.png) | [![粉色酒店大堂：生成的 2:1 全景图](assets/examples/pink-lobby-after.png)](assets/examples/pink-lobby-after.png) |
+| [![Pink hotel lobby reference](assets/examples/pink-lobby-before.png)](assets/examples/pink-lobby-before.png) | [![Generated pink hotel lobby panorama](assets/examples/pink-lobby-after.png)](assets/examples/pink-lobby-after.png) |
 
-[查看完整全景 PNG](assets/examples/pink-lobby-after.png)
+[Open the full panorama PNG](assets/examples/pink-lobby-after.png)
 
-### Example 02 — 阳光厨房
+### Example 02 — Sunlit Kitchen
 
-白色柜体、橡木岛台与木板地面的全景扩展。此版本在 PINOC 重建中仍出现岛台和光带弯曲，是后续迭代的案例。
+White cabinetry, an oak island, and a wooden plank floor. This version still showed curved island edges and light bands after PINOC reconstruction; it remains a case for further improvement.
 
-| Before · 原图 | After · 360° 全景 |
+| Before · Reference | After · 360° Panorama |
 | --- | --- |
-| [![阳光厨房：原始参考图](assets/examples/oak-kitchen-before.png)](assets/examples/oak-kitchen-before.png) | [![阳光厨房：生成的 2:1 全景图](assets/examples/oak-kitchen-after.png)](assets/examples/oak-kitchen-after.png) |
+| [![Sunlit kitchen reference](assets/examples/oak-kitchen-before.png)](assets/examples/oak-kitchen-before.png) | [![Generated sunlit kitchen panorama](assets/examples/oak-kitchen-after.png)](assets/examples/oak-kitchen-after.png) |
 
-[查看完整全景 PNG](assets/examples/oak-kitchen-after.png)
+[Open the full panorama PNG](assets/examples/oak-kitchen-after.png)
 
-### Example 03 — 乡村面包房
+### Example 03 — Rustic Bakery
 
-木梁、拱门与面包陈列的全景扩展。此版本仍有原图小地垫缺失、部分石板尺寸变化。
+Timber beams, an arched doorway, and bread displays. This version omits the small mat in the reference and changes the size of some floor stones.
 
-| Before · 原图 | After · 360° 全景 |
+| Before · Reference | After · 360° Panorama |
 | --- | --- |
-| [![乡村面包房：原始参考图](assets/examples/bakery-before.png)](assets/examples/bakery-before.png) | [![乡村面包房：生成的 2:1 全景图](assets/examples/bakery-after.png)](assets/examples/bakery-after.png) |
+| [![Rustic bakery reference](assets/examples/bakery-before.png)](assets/examples/bakery-before.png) | [![Generated rustic bakery panorama](assets/examples/bakery-after.png)](assets/examples/bakery-after.png) |
 
-[查看完整全景 PNG](assets/examples/bakery-after.png)
+[Open the full panorama PNG](assets/examples/bakery-after.png)
 
-全景图在这里以平面展开图显示；请用支持 2:1 等距柱状投影的查看器体验环视效果。
+The images above are flat panorama layouts. Open them in a viewer that supports 2:1 equirectangular images to look around.
 
-## 它会检查什么？
+## What gets checked?
 
-agent 会先辨认原图中的结构和材质，再生成全景，并检查 **18 个基础视角＋针对重要区域补充的视角**。
+The agent identifies structures and materials in the reference, generates the panorama, then inspects **18 baseline views plus additional views of important features**.
 
-检查包括物体形状、遮挡与接触、光影、纹理、接缝和上下方向的完整性。规则取决于原图：木板检查排列，山林检查自然形态，没有方格的地面就不应凭空加上方格。
+Checks cover object shapes, occlusion and contact, lighting, textures, seams, and coverage above and below the camera. The reference determines the constraints: wooden boards need consistent placement, forests need natural forms, and a floor without a grid should stay that way.
 
-如果结果有问题，附上**实际使用的全景 PNG、问题截图和所在方向**。如果经过了 3D 重建，也请注明工具和 workflow，便于区分输入图与重建阶段的问题。
+To report a problem, provide **the exact panorama PNG, a screenshot, and the direction where the issue appears**. If you used 3D reconstruction, include the tool and workflow so the input image and reconstruction stages can be investigated separately.
 
-**全景验收通过，不等于 3D 重建通过。** 单张图看不到的区域属于合理补全；本 skill 不保证恢复真实三维空间，也不保证任意重建工具中的结果。
+**A panorama passing inspection does not mean its 3D reconstruction will pass.** Unseen areas are plausible completions. This skill does not guarantee recovery of the real scene geometry or correct results in every reconstruction tool.
 
 ---
 
-想了解具体流程？阅读 [完整 skill](SKILL.md) 和 [通用场景验收机制](references/general-scene-qa.md)。
+For the full workflow, see [the skill instructions](SKILL.md) and [general-scene inspection](references/general-scene-qa.md).
