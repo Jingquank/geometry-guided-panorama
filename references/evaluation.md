@@ -16,7 +16,7 @@ python3 "$SKILL_DIR/scripts/floor_self_test.py"
 python3 "$SKILL_DIR/scripts/execution_self_test.py"
 ```
 
-The current run summary is `references/validation-results-v3.json`; current logs use `test-output-v3-*.txt`. Earlier logs and summaries are historical, not this revision's execution evidence.
+Historical v3 summary is `references/validation-results-v3.json`; its logs use `test-output-v3-*.txt`. Earlier logs and summaries are historical, not this revision's execution evidence.
 
 The current revision reruns the original 11 and floor 14 tests and adds 20 execution/final-pixel tests (45 total). It tests code, not AI quality. The old positive record-only fixture now uses an explicitly unpatterned surface; a patterned candidate without a finish must fail.
 
@@ -70,3 +70,37 @@ The revised implementation was tested locally, but no new AI-refined hotel
 panorama or downstream reconstruction was executed. Passing unit tests does not
 establish an AI success rate or a universal runtime advantage. The visible
 checker control tests the projection path, not final-art material quality.
+
+
+## Current evidence-led revision
+
+Run `python3 scripts/general_scene_self_test.py` in addition to the three suites
+above. Current results: validation-results-evidence-led.json (57 synthetic tests).
+These tests cover schema, evidence gating, adaptive projections and review invalidation;
+scene labels in fixtures do not establish visual generalization.
+
+Before claiming broad generation quality, run an end-to-end set with actual inputs:
+interior furniture and cast light; outdoor architecture; rugged terrain and forest;
+intentionally curved architecture; unpatterned ground; sky or water without a floor.
+Review source fidelity, feature shapes, contacts, lighting, seam/poles and adaptive
+view coverage. Keep failures and report samples/repair budgets. The kitchen with
+bowed island/light after reconstruction is a downstream regression case, not proof
+that the revised instructions fix reconstruction. Preserve its input, downstream
+workflow/settings and observed failure; never silently upgrade its old approval.
+
+
+## Current evidence-led revision
+
+Run `python3 scripts/general_scene_self_test.py` in addition to the three suites
+above. Current results: validation-results-evidence-led.json (57 synthetic tests).
+These tests cover schema, evidence gating, adaptive projections and review invalidation;
+scene labels in fixtures do not establish visual generalization.
+
+Before claiming broad generation quality, run an end-to-end set with actual inputs:
+interior furniture and cast light; outdoor architecture; rugged terrain and forest;
+intentionally curved architecture; unpatterned ground; sky or water without a floor.
+Review source fidelity, feature shapes, contacts, lighting, seam/poles and adaptive
+view coverage. Keep failures and report samples/repair budgets. The kitchen with
+bowed island/light after reconstruction is a downstream regression case, not proof
+that the revised instructions fix reconstruction. Preserve its input, downstream
+workflow/settings and observed failure; never silently upgrade its old approval.

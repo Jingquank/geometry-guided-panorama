@@ -22,6 +22,7 @@ def fixture(root: Path, *, mode="masked_surface_finish"):
     spec={"route":"geometry_guided","scene_type":"interior","surface_constraints":[{
         "id":"floor","geometry":"horizontal_plane","pattern":"cartesian_checkerboard",
         "finish_route":"world_space_surface"}]}
+    spec['inspection_plan']={'version':1,'targets':[],'no_targets_reason':'Synthetic validator fixture, not artwork.'}
     write(root/'scene-spec.json',spec)
     (root/'scene.py').write_text('# SYNTHETIC UNIT TEST INPUT, NOT EXECUTED SCENE\n')
     base=np.full((32,64,3),[22,40,80],np.uint8)
@@ -31,7 +32,7 @@ def fixture(root: Path, *, mode="masked_surface_finish"):
     Image.fromarray(base).save(root/'base.png')
     Image.fromarray(surf).save(root/'surface.png')
     Image.fromarray(mask).save(root/'mask.png')
-    gr=passed_fixture(root/'base.png',root/'guide-check')
+    gr=passed_fixture(root/'base.png',root/'guide-check',root/'scene-spec.json')
     protected=['nadir']+[v[0] for v in VIEWS if v[0].startswith('floor-')]
     review={"status":"passed","reviewer":"SYNTHETIC TEST FIXTURE ONLY",
         "evidence":"Synthetic record; neither floor nor artwork is visually approved.",
@@ -73,7 +74,7 @@ def fixture(root: Path, *, mode="masked_surface_finish"):
 def complete(root):
     state,req=fixture(root)
     manifest=build(root/'finish.json',root/'out.png')
-    cr=passed_fixture(root/'out.png',root/'final-check')
+    cr=passed_fixture(root/'out.png',root/'final-check',root/'scene-spec.json')
     write(root/'request.json',{"authored_prompt":"SYNTHETIC TEST FIXTURE ONLY",
         "actual_input_references":["fixture"],"structural_base_sha256":digest(root/'base.png')})
     state.update(status='ready_for_review',candidate=binding(root/'out.png'),candidate_review=binding(cr),

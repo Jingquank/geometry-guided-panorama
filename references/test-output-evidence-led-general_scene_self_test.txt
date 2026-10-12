@@ -1,0 +1,17 @@
+test_downstream_pass_cannot_replace_panorama_pass (__main__.GeneralSceneTests.test_downstream_pass_cannot_replace_panorama_pass) ... ok
+test_duplicate_target_rejected (__main__.GeneralSceneTests.test_duplicate_target_rejected) ... ok
+test_empty_sky_requires_reason (__main__.GeneralSceneTests.test_empty_sky_requires_reason) ... ok
+test_missing_evidence_and_bad_angles_rejected (__main__.GeneralSceneTests.test_missing_evidence_and_bad_angles_rejected) ... ok
+test_missing_target_view_or_evidence_blocks (__main__.GeneralSceneTests.test_missing_target_view_or_evidence_blocks) ... ok
+test_new_shared_checks_cannot_be_omitted (__main__.GeneralSceneTests.test_new_shared_checks_cannot_be_omitted) ... ok
+test_overlapping_target_uses_requested_fov (__main__.GeneralSceneTests.test_overlapping_target_uses_requested_fov) ... ok
+test_plan_change_resets_review_even_same_png (__main__.GeneralSceneTests.test_plan_change_resets_review_even_same_png) ... ok
+test_release_rejects_detached_final_plan (__main__.GeneralSceneTests.test_release_rejects_detached_final_plan) ... ok
+test_release_requires_plan_even_for_direct_sky (__main__.GeneralSceneTests.test_release_requires_plan_even_for_direct_sky) ... ok
+test_scene_constraints_are_not_rectangular_templates (__main__.GeneralSceneTests.test_scene_constraints_are_not_rectangular_templates) ... ok
+test_target_exports_never_auto_approve (__main__.GeneralSceneTests.test_target_exports_never_auto_approve) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.667s
+
+OK

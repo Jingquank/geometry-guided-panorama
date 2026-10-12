@@ -1,0 +1,22 @@
+{
+  "revision": "evidence-led-general-scenes",
+  "pipeline_version": 3,
+  "review_version": "3-evidence-led",
+  "unit_tests": {
+    "original": 11,
+    "floor": 14,
+    "execution": 20,
+    "general_scene": 12,
+    "total": 57,
+    "result": "passed"
+  },
+  "visual_smoke": "Existing kitchen PNG exported with 3 targets (6 added views). Export only; review remains not_reviewed.",
+  "new_ai_calls": 0,
+  "downstream_tested": false,
+  "cross_scene_visual_benchmark": "not run",
+  "limitations": [
+    "Synthetic contracts do not prove visual generalization.",
+    "Target selection and visual judgments remain human/agent responsibilities.",
+    "Same-center reprojections do not validate translation or 3D reconstruction."
+  ]
+}

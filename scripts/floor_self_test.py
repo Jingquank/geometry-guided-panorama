@@ -23,8 +23,8 @@ SPEC={"camera":[0.17,-0.11,1.6],"floor_z":0.0,"origin_xy":[0,0],
       "colors_srgb":[[224,208,188],[56,75,63]]}
 
 
-def passed_fixture(image:Path, directory:Path):
-    check(image,directory,32)
+def passed_fixture(image:Path, directory:Path, scene_spec=None):
+    check(image,directory,32,scene_spec=scene_spec)
     rp=directory/"visual-review.json"
     data=json.loads(rp.read_text())
     data.update(status="passed",reviewer="SYNTHETIC TEST FIXTURE; NOT ARTWORK APPROVAL",
@@ -175,6 +175,11 @@ class GateTests(unittest.TestCase):
             gr=passed_fixture(p/'guide.png',p/'guide-check')
             (p/'spec.json').write_text(json.dumps({'route':'geometry_guided','scene_type':'interior',
                                                  'surface_constraints':[{'id':'floor','pattern':'none'}]}))
+            spec=json.loads((p/'spec.json').read_text())
+            spec['inspection_plan']={'version':1,'targets':[],'no_targets_reason':'Synthetic uniform record fixture only.'}
+            (p/'spec.json').write_text(json.dumps(spec))
+            cr=passed_fixture(p/'candidate.png',p/'final-check',p/'spec.json')
+            gr=passed_fixture(p/'guide.png',p/'guide-check',p/'spec.json')
             (p/'scene.py').write_text('# Synthetic file for release-record testing only\n')
             (p/'request.json').write_text(json.dumps({'authored_prompt':'synthetic fixture',
                 'structural_base_sha256':digest(p/'guide.png'),'actual_input_references':['test guide']}))

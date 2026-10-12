@@ -107,3 +107,19 @@ Save the authored request, actual source references/hashes, tool/model identifie
 Preserve the untouched result under a versioned name. Verify dimensions and decoded image bytes. Convert a supported non-PNG result to PNG only without silently altering content or aspect ratio, then inspect that exact PNG. Record a conversion if it occurred. Distinguish native generation from upscaling.
 
 If a tool exposes only a finished image in the conversation and disallows further processing in the same turn, do not claim to have run the checker on it. A native image output may be useful, but it remains unverified by this workflow until its bytes are available and actually checked.
+
+
+## Repair according to the violated constraint
+
+Consult inspection_plan, not a scene-name template. Local grain/color defects can
+use appearance repair. Whole-object bow, inconsistent thickness or disconnected
+organic forms need a structural correction followed by full silhouette/contact
+review. A floor-only finish cannot certify furniture geometry. Repeated structural
+drift should switch to affected-object geometry plus mapped material where feasible;
+unsupported complex geometry must remain an explicit limitation, not a crude
+replacement approved against itself. All repair routes still compare to the source.
+
+Where light is reconstructed, use the same estimated scene geometry for emitters,
+occluders and receiving surfaces. Do not flatten or remove source lighting by
+default. Shadows/reflections need their own review; planar texture topology alone
+cannot validate them. Keep low-light/no-shadow variants as labeled diagnostics only.

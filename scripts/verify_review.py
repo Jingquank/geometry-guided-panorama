@@ -5,10 +5,11 @@ import argparse
 import json
 from pathlib import Path
 import sys
+from inspection_plan import validate_plan, plan_digest, target_views
 from check_pano import VIEWS, FLOOR_VIEWS, REVIEW_VERSION, VISUAL_CHECKS, read_rgb
 
 
-def verify(candidate: Path, review_path: Path) -> list[str]:
+def verify(candidate: Path, review_path: Path, scene_spec: Path | None = None) -> list[str]:
     _, info = read_rgb(candidate)
     review = json.loads(review_path.read_text())
     errors = []
@@ -23,6 +24,32 @@ def verify(candidate: Path, review_path: Path) -> list[str]:
     if not review.get("reviewer"):
         errors.append("Reviewer is missing.")
     required = {name for name, _, _ in VIEWS}
+    plan = review.get("inspection_plan")
+    if scene_spec:
+        expected = validate_plan(json.loads(scene_spec.read_text()))
+        if plan != expected or review.get("inspection_plan_sha256") != plan_digest(expected):
+            errors.append("Review inspection plan is missing or stale for this scene")
+        plan = expected
+    if plan is not None:
+        validate_plan({"inspection_plan": plan})
+        if review.get("inspection_plan_sha256") != plan_digest(plan):
+            errors.append("Inspection plan hash mismatch")
+        required.update(v[0] for v in target_views(plan))
+        for target in plan['targets']:
+            key = target['id']
+            entry = review.get('target_checks', {}).get(key, {})
+            needed = {f'target-{key}-a', f'target-{key}-b'}
+            if (entry.get('status') != 'pass' or not str(entry.get('evidence', '')).strip()
+                    or not needed.issubset(set(entry.get('views', [])))
+                    or not set(entry.get('views', [])).issubset(required)):
+                errors.append(f'Missing passing target evidence: {key}')
+    downstream = review.get('downstream_validation', {})
+    if downstream.get('status') not in {'not_tested', 'passed', 'failed'}:
+        errors.append('Explicit downstream_validation status required')
+    if downstream.get('status') in {'passed', 'failed'}:
+        for field in ('system', 'workflow', 'evidence', 'artifact'):
+            if not str(downstream.get(field, '')).strip():
+                errors.append(f'Downstream result missing {field}')
     if not required.issubset(set(review.get("reviewed_views", []))):
         errors.append("Not all required views have been reviewed.")
     for key in VISUAL_CHECKS:
@@ -46,9 +73,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("candidate", type=Path)
     parser.add_argument("review", type=Path)
+    parser.add_argument("--scene-spec", type=Path)
     args = parser.parse_args()
     try:
-        errors = verify(args.candidate, args.review)
+        errors = verify(args.candidate, args.review, args.scene_spec)
         print(json.dumps({"review_record_complete_and_current": not errors,
                           "errors": errors,
                           "limitation": "This checks records, not the truth of visual judgments."}, indent=2))

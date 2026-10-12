@@ -12,6 +12,7 @@ from typing import Any
 
 import numpy as np
 from PIL import Image, ImageDraw
+from inspection_plan import validate_plan, plan_digest, target_views, target_records
 
 VIEWS = [
     ("front", 0.0, 0.0), ("front-right", 45.0, 0.0),
@@ -23,8 +24,8 @@ VIEWS = [
 # Deliberate extra overlap below the horizon: floor drift can hide in level views.
 FLOOR_VIEWS = [("floor-" + name, yaw, -45.0) for name, yaw, _ in VIEWS[:8]]
 VIEWS += FLOOR_VIEWS
-REVIEW_VERSION = "2-floor-topology"
-VISUAL_CHECKS = ("geometry", "surface_pattern", "inventory", "coverage", "seam", "poles", "reference_fidelity")
+REVIEW_VERSION = "3-evidence-led"
+VISUAL_CHECKS = ("geometry", "surface_pattern", "inventory", "coverage", "seam", "poles", "reference_fidelity", "cross_view_consistency", "spatial_relations", "lighting_consistency")
 
 
 def digest(path: Path) -> str:
@@ -60,8 +61,8 @@ def sample_equirectangular(image: np.ndarray, directions: np.ndarray) -> np.ndar
             fy * ((1-fx)*image[y1, x0] + fx*image[y1, x1]))
 
 
-def perspective(image: np.ndarray, size: int, yaw: float, pitch: float) -> Image.Image:
-    data = sample_equirectangular(image, rays(size, yaw, pitch))
+def perspective(image: np.ndarray, size: int, yaw: float, pitch: float, fov: float = 90) -> Image.Image:
+    data = sample_equirectangular(image, rays(size, yaw, pitch, fov))
     return Image.fromarray(np.clip(np.rint(data), 0, 255).astype(np.uint8))
 
 
@@ -92,13 +93,14 @@ def seam_diagnostics(image: np.ndarray) -> dict[str, Any]:
             "interpretation": "Diagnostic only. Adjacent boundary pixels need not match. No visual pass/fail threshold."}
 
 
-def initialize_review(output: Path, source: dict[str, Any], automated: dict[str, Any]) -> None:
+def initialize_review(output: Path, source: dict[str, Any], automated: dict[str, Any], plan=None) -> None:
     path = output / "visual-review.json"
     if path.exists():
         try:
             old = json.loads(path.read_text())
             if (old.get("candidate_sha256") == source["sha256"] and
-                    old.get("review_version") == REVIEW_VERSION):
+                    old.get("review_version") == REVIEW_VERSION and
+                    old.get("inspection_plan_sha256") == (plan_digest(plan) if plan else None)):
                 return
             suffix = str(old.get("candidate_sha256", "unknown"))[:12]
         except (ValueError, OSError):
@@ -108,7 +110,11 @@ def initialize_review(output: Path, source: dict[str, Any], automated: dict[str,
         "candidate_path": source["path"], "candidate_sha256": source["sha256"],
         "review_version": REVIEW_VERSION,
         "status": "not_reviewed", "reviewer": None,
-        "required_views": [name for name, _, _ in VIEWS], "reviewed_views": [],
+        "required_views": [name for name, _, _ in VIEWS] + [v[0] for v in target_views(plan)] if plan else [v[0] for v in VIEWS], "reviewed_views": [],
+        "inspection_plan": plan,
+        "inspection_plan_sha256": plan_digest(plan) if plan else None,
+        "target_checks": target_records(plan) if plan else {},
+        "downstream_validation": {"status": "not_tested"},
         "automated_file_checks": automated,
         "checks": {key: {"status": "not_reviewed", "evidence": "", "views": []}
                    for key in VISUAL_CHECKS},
@@ -118,7 +124,8 @@ def initialize_review(output: Path, source: dict[str, Any], automated: dict[str,
     path.write_text(json.dumps(review, indent=2) + "\n")
 
 
-def check(path: Path, output: Path, size: int = 512, guide: Path | None = None) -> dict[str, Any]:
+def check(path: Path, output: Path, size: int = 512, guide: Path | None = None, scene_spec: Path | None = None) -> dict[str, Any]:
+    plan = validate_plan(json.loads(scene_spec.read_text())) if scene_spec else None
     image, source = read_rgb(path)
     output.mkdir(parents=True, exist_ok=True)
     automated = {"decoded": True, "png": source["format"] == "PNG",
@@ -171,7 +178,14 @@ def check(path: Path, output: Path, size: int = 512, guide: Path | None = None) 
     else:
         result["error"] = "Wrong aspect ratio. No projection images generated; do not stretch/crop to conceal it."
     (output / "diagnostics.json").write_text(json.dumps(result, indent=2) + "\n")
-    initialize_review(output, source, automated)
+    if automated["exact_2_to_1"] and plan:
+        for name, yaw, pitch, fov in target_views(plan):
+            perspective(image, size, yaw, pitch, fov).save(output / f"{name}.png")
+            result["views"].append({"name": name, "yaw_degrees": yaw, "pitch_degrees": pitch,
+                "horizontal_fov_degrees": fov, "vertical_fov_degrees": fov,
+                "path": str(output / f"{name}.png")})
+        (output / "diagnostics.json").write_text(json.dumps(result, indent=2) + "\n")
+    initialize_review(output, source, automated, plan)
     return result
 
 
@@ -181,11 +195,12 @@ def main() -> int:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--view-size", type=int, default=512)
     parser.add_argument("--guide", type=Path)
+    parser.add_argument("--scene-spec", type=Path, help="Evidence-led inspection plan; required for pipeline release")
     args = parser.parse_args()
     if not 32 <= args.view_size <= 2048:
         parser.error("view-size must be between 32 and 2048")
     try:
-        result = check(args.image.resolve(), args.output_dir.resolve(), args.view_size, args.guide)
+        result = check(args.image.resolve(), args.output_dir.resolve(), args.view_size, args.guide, args.scene_spec)
         print(json.dumps({"automated_file_checks": result["automated_file_checks"],
                           "visual_quality_status": "not_reviewed",
                           "output_dir": str(args.output_dir.resolve())}, indent=2))

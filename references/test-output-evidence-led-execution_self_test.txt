@@ -1,0 +1,25 @@
+test_pattern_assessment_must_be_structured (__main__.ExecutionGuardTests.test_pattern_assessment_must_be_structured) ... ok
+test_preflight_accepts_complete_synthetic_inputs (__main__.ExecutionGuardTests.test_preflight_accepts_complete_synthetic_inputs) ... ok
+test_preflight_rejects_image_generation_last (__main__.ExecutionGuardTests.test_preflight_rejects_image_generation_last) ... ok
+test_preflight_rejects_missing_guide (__main__.ExecutionGuardTests.test_preflight_rejects_missing_guide) ... ok
+test_preflight_rejects_prefer_only_surface_route (__main__.ExecutionGuardTests.test_preflight_rejects_prefer_only_surface_route) ... ok
+test_preflight_rejects_terminal_host (__main__.ExecutionGuardTests.test_preflight_rejects_terminal_host) ... ok
+test_broad_feather_and_soft_only_mask_rejected (__main__.FinalPixelTests.test_broad_feather_and_soft_only_mask_rejected) ... ok
+test_guide_cannot_be_labeled_final_role (__main__.FinalPixelTests.test_guide_cannot_be_labeled_final_role) ... ok
+test_masked_finalizer_preserves_both_regions (__main__.FinalPixelTests.test_masked_finalizer_preserves_both_regions) ... ok
+test_missing_downward_surface_views_rejected (__main__.FinalPixelTests.test_missing_downward_surface_views_rejected) ... ok
+test_missing_full_coverage_review_rejected (__main__.FinalPixelTests.test_missing_full_coverage_review_rejected) ... ok
+test_one_pixel_boundary_blend_supported (__main__.FinalPixelTests.test_one_pixel_boundary_blend_supported) ... ok
+test_pixel_edit_detected_even_when_output_hash_refreshed (__main__.FinalPixelTests.test_pixel_edit_detected_even_when_output_hash_refreshed) ... ok
+test_rendered_panorama_finalizer (__main__.FinalPixelTests.test_rendered_panorama_finalizer) ... ok
+test_stale_mask_review_rejected (__main__.FinalPixelTests.test_stale_mask_review_rejected) ... ok
+test_patterned_chain_without_finish_fails (__main__.ReleaseTests.test_patterned_chain_without_finish_fails) ... ok
+test_renderer_only_request_needs_no_fictitious_prompt (__main__.ReleaseTests.test_renderer_only_request_needs_no_fictitious_prompt) ... ok
+test_stale_preflight_rejected (__main__.ReleaseTests.test_stale_preflight_rejected) ... ok
+test_v2_pipeline_cannot_reuse_v3_gate (__main__.ReleaseTests.test_v2_pipeline_cannot_reuse_v3_gate) ... ok
+test_v3_complete_synthetic_chain_passes (__main__.ReleaseTests.test_v3_complete_synthetic_chain_passes) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 2.083s
+
+OK

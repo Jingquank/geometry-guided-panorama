@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 from check_pano import digest
 from verify_review import verify
+from inspection_plan import validate_plan
 
 VERSION = 3
 NONPATTERNS = {"none", "unpatterned", "irregular_natural", "solid"}
@@ -68,6 +69,7 @@ def preflight(pipeline_path: Path) -> list[str]:
             errors.append(f"Cannot verify this route: capability {key} is not confirmed")
     try:
         spec = read_object(resolve_artifact(root, data, "scene_spec"))
+        validate_plan(spec)
         route = spec.get("route")
         if route == "direct_simple":
             if (spec.get("scene_type") not in ("sky", "distant_landscape") or
@@ -78,7 +80,7 @@ def preflight(pipeline_path: Path) -> list[str]:
         elif route in ("geometry_guided", "same_layout_edit"):
             base = resolve_artifact(root, data, "structural_base")
             review = resolve_artifact(root, data, "structural_base_review")
-            errors.extend("Structural base: " + e for e in verify(base, review))
+            errors.extend("Structural base: " + e for e in verify(base, review, resolve_artifact(root, data, "scene_spec")))
             if route == "geometry_guided":
                 resolve_artifact(root, data, "scene_source")
             protected = patterned_ids(spec)

@@ -155,3 +155,13 @@ old reviews; copied calibration labeled final artwork.
 
 Synthetic fixture reviews used by unit tests are never artwork approvals. Report unit
 coverage separately from actual AI output quality and downstream viewer testing.
+
+
+## Evidence-led review extension (review schema 3-evidence-led)
+
+The container and preflight remain pipeline version 3. Every scene spec now needs
+`inspection_plan` version 1; see general-scene-qa.md. Pass `--scene-spec` to both
+guide and final check_pano.py calls. Preflight and release validate the review's
+plan against the bound scene spec. Old seven-check reviews cannot pass the new
+gate; rerun and actually inspect the additional checks/targets. Never auto-migrate
+old approvals. The exact-pixel surface finish remains unchanged.

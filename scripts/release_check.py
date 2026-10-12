@@ -33,7 +33,7 @@ def verify_pipeline(pipeline_path: Path) -> list[str]:
     request_path = artifact("generation_request")
     preflight_path = artifact("preflight_report")
     if candidate and review:
-        errors.extend("Final: " + e for e in verify(candidate, review))
+        errors.extend("Final: " + e for e in verify(candidate, review, spec_path))
     if preflight_path:
         old = read_object(preflight_path)
         current = report_for(pipeline_path)

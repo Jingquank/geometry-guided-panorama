@@ -1,0 +1,16 @@
+test_cpp_render_axes_cache_and_determinism (__main__.GeometryTests.test_cpp_render_axes_cache_and_determinism) ... ok
+test_invalid_geometry (__main__.GeometryTests.test_invalid_geometry) ... ok
+test_multipart_identity (__main__.GeometryTests.test_multipart_identity) ... ok
+test_cardinal_directions (__main__.ProjectionTests.test_cardinal_directions) ... ok
+test_horizontal_wrap_interpolation (__main__.ProjectionTests.test_horizontal_wrap_interpolation) ... ok
+test_roll_inverse_pixels (__main__.ProjectionTests.test_roll_inverse_pixels) ... ok
+test_texture_reprojection_centers (__main__.ProjectionTests.test_texture_reprojection_centers) ... ok
+test_changed_file_invalidates_review (__main__.ReviewTests.test_changed_file_invalidates_review) ... ok
+test_check_does_not_auto_approve (__main__.ReviewTests.test_check_does_not_auto_approve) ... ok
+test_transparency_rejected (__main__.ReviewTests.test_transparency_rejected) ... ok
+test_wrong_aspect_rejected (__main__.ReviewTests.test_wrong_aspect_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 3.541s
+
+OK

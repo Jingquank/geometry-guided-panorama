@@ -33,3 +33,9 @@ A bad surface render remains bad after perfect copying; full visual QA is essent
 Do not deliver guides or controls as final art. Do not call the output verified when
 the gate has not run. Do not claim unit tests demonstrate image-model quality or
 that a fixed-center panorama validates a reconstruction or translated camera.
+
+
+Current reviews use 3-evidence-led: ten shared checks plus scene-plan target checks.
+Preflight and release reject absent/stale plans and missing target-view evidence.
+Downstream reconstruction is recorded separately; its success cannot waive any
+panorama check, and a panorama pass must not be presented as a downstream pass.

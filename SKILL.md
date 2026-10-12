@@ -7,7 +7,7 @@ description: Create, edit, and diagnose full 360 x 180 degree, 2:1 equirectangul
 
 ## 0. Establish the execution contract FIRST
 
-Resolve and read the actual selected package, not a remembered earlier version. This is the **execution-and-final-pixel-lock revision, pipeline version 3**. Follow [references/execution-contract.md](references/execution-contract.md) for records and commands.
+Resolve and read the actual selected package, not a remembered earlier version. This is the **evidence-led general-scene revision**, review schema `3-evidence-led`, retaining pipeline version 3 and deterministic surface finishing. Follow [references/execution-contract.md](references/execution-contract.md) for records and commands.
 
 **Do not call image generation as the first step for a structural scene.** A request to use this skill authorizes the workflow, not replacement of it with a longer panorama prompt. Tool calls and artifacts must exist; describing geometry in a prompt does not create geometry.
 
@@ -37,6 +37,15 @@ For each surface record `id`, `geometry`, `pattern`, world axes/origin, dimensio
 
 Use +X right, +Y forward, +Z up. Front is image center, back is the horizontal wrap boundary, zenith is top, nadir bottom. Sample pixel centers with periodic longitude and no duplicated final column. Use one fixed projection center. Read [geometry.md](geometry.md) before geometry work.
 
+### Evidence-led inspection plan (every scene)
+
+Before guide approval, read [references/general-scene-qa.md](references/general-scene-qa.md)
+and add `inspection_plan` to the scene spec. Select salient, vulnerable features
+from source evidence: shape, continuity, repetition, support/occlusion and light.
+Separate observed, requested and inferred constraints. Natural curves must remain
+curved; no flat ground, Manhattan room or grid is implied by this workflow.
+The plan is required even for direct_simple (an empty target list needs a reason).
+
 ## 2. Build and inspect the guide before generation
 
 Create a task-specific `scene.py` using the bundled API or a compatible renderer. Model silhouettes, openings, occlusion, and contacts independently of material pattern. For an unpatterned or uncertain floor, use a plain plane/mesh with source-matched base color; do not call `Scene.checker_floor(...)`. Use that helper only for an evidence-backed checkerboard, and a matching mapper for other observed patterns. Calibration grids belong in separate diagnostic artifacts and must never become the artwork guide. Do not create overlapping coplanar floors.
@@ -45,7 +54,7 @@ Create a task-specific `scene.py` using the bundled API or a compatible renderer
 python3 "$SKILL_DIR/scripts/render_guide.py" --scene "$WORK/scene.py" \
   --output-dir "$WORK/guide" --cache-dir "$WORK/.renderer-cache" --width 1536 --samples 4
 python3 "$SKILL_DIR/scripts/check_pano.py" "$WORK/guide/geometry-guide.png" \
-  --output-dir "$WORK/guide-check"
+  --output-dir "$WORK/guide-check" --scene-spec "$WORK/scene-spec.json"
 ```
 
 Inspect the guide in perspective, including nadir and oblique floor views, and compare the corresponding visible region directly with the original reference. Check both structural alignment and whether the guide invented a pattern or changed an object. Record actual evidence. Fix the guide before refinement; consistency with an incorrect scene spec is not approval. The bundled CPU renderer is a proxy renderer, not a production marble/reflection renderer. Proxy IDs/depth are not segmentation/depth measured from later AI artwork. Increase samples only for aliasing, not layout mistakes.
@@ -90,10 +99,11 @@ Do not pass the finished result through another unconstrained AI edit. To repair
 
 ```bash
 python3 "$SKILL_DIR/scripts/check_pano.py" "$WORK/candidate-01/panorama.png" \
-  --output-dir "$WORK/candidate-01/check" --guide "$WORK/guide/geometry-guide.png"
+  --output-dir "$WORK/candidate-01/check" --guide "$WORK/guide/geometry-guide.png" \
+  --scene-spec "$WORK/scene-spec.json"
 ```
 
-Omit `--guide` only for `direct_simple`; use the validated source for same-layout edits. Read [qa.md](qa.md). Inspect the 18 named views and the floor montage. Require straight physical joints in pinhole perspective, a regular square lattice in perpendicular nadir when intended, proper foreshortening in oblique views, seam continuity, complete poles, correct object counts, and preserved reference style. Raw equirectangular curves are not inherently defects.
+Omit `--guide` only for `direct_simple`; use the validated source for same-layout edits. Read [qa.md](qa.md). Inspect all 18 individual baseline views, the floor montage, and every generated target view. The baseline is a minimum, not a cap. In sky/water/terrain scenes, floor-* names mean downward directions, not a floor assumption. Record evidence for all ten shared checks and every plan target. Require straight physical joints in pinhole perspective, a regular square lattice in perpendicular nadir when intended, proper foreshortening in oblique views, seam continuity, complete poles, correct object counts, and preserved reference style. Raw equirectangular curves are not inherently defects.
 
 `check_pano.py` exit code 0 means file checks only. It initializes visual status to `not_reviewed`; it does not measure semantic floor correctness. Record `failed` immediately on any major defect. Only mark `passed` after actual inspection of all required views and all checks. Hashes prove file identity, not that a judgment is true. Never turn synthetic test fixtures into artwork reviews.
 
@@ -107,7 +117,7 @@ For a regular pattern this now requires and recomputes the last deterministic su
 
 ## 6. Failure and delivery
 
-Fix geometry errors in geometry. If a guide or candidate introduced a pattern absent from the reference, remove that invented pattern and correct the scene spec, guide, and dependent evidence. Do not make the invention more geometrically precise. For drift in an actually observed/requested pattern, use deterministic surface rendering, not another whole-panorama "straight tiles" prompt. Repair isolated defects only in the intermediate artwork and repeat finalization. Default budget: one initial candidate and at most two targeted repairs; after the first repeated global-pattern failure, change methods rather than spend another identical attempt. Never claim universal latency/quality or unseen test results.
+Fix geometry errors in geometry. A straightened 2D edge does not establish a planar object: check the complete silhouette, opposite edges, thickness, contacts and neighboring perspectives. For repeated salient shape drift, rebuild the affected geometry and map appearance onto it or report the limitation; do not silently simplify the reference to the proxy. Do not add a whole-scene modeling requirement for unconstrained natural detail. If a guide or candidate introduced a pattern absent from the reference, remove that invented pattern and correct the scene spec, guide, and dependent evidence. Do not make the invention more geometrically precise. For drift in an actually observed/requested pattern, use deterministic surface rendering, not another whole-panorama "straight tiles" prompt. Repair isolated defects only in the intermediate artwork and repeat finalization. Default budget: one initial candidate and at most two targeted repairs; after the first repeated global-pattern failure, change methods rather than spend another identical attempt. Never claim universal latency/quality or unseen test results.
 
 Deliver one verified PNG through a confirmed file link/attachment when available. Keep engineering files private unless requested. Report actual dimensions and validation only when permitted by the host's output rules. An explicitly authorized preview must be labeled unverified before a terminal image call, not silently substituted for a requested verified asset.
 
