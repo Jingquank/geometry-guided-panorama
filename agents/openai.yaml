@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geometry-Guided Panorama"
+  short_description: "Render locked surfaces; inspect the exact final panorama"
+  default_prompt: "Read the selected skill package first. Check capabilities and the reviewed structural guide before generation. For regular surface patterns, finish with deterministic world-space rendering/compositing, not image generation. Inspect actual reprojections and run the release gate. Stop rather than substitute a prompt-only panorama."

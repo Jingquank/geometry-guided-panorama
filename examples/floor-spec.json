@@ -1,0 +1,9 @@
+{
+  "camera": [0.17, -0.11, 1.6],
+  "floor_z": 0.0,
+  "origin_xy": [0.0, 0.0],
+  "period_xy": [0.65, 0.65],
+  "rotation_degrees": 23.0,
+  "colors_srgb": [[224, 208, 188], [56, 75, 63]],
+  "note": "Calibration estimates only. Checker period is one tile; with --texture it is one full repeated patch. Use observed/estimated scene values, not this preset."
+}

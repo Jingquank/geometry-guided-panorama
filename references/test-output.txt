@@ -1,0 +1,36 @@
+test_cpp_render_axes_cache_and_determinism (__main__.GeometryTests.test_cpp_render_axes_cache_and_determinism) ... ok
+test_invalid_geometry (__main__.GeometryTests.test_invalid_geometry) ... ok
+test_multipart_identity (__main__.GeometryTests.test_multipart_identity) ... ok
+test_cardinal_directions (__main__.ProjectionTests.test_cardinal_directions) ... ok
+test_horizontal_wrap_interpolation (__main__.ProjectionTests.test_horizontal_wrap_interpolation) ... ok
+test_roll_inverse_pixels (__main__.ProjectionTests.test_roll_inverse_pixels) ... ok
+test_texture_reprojection_centers (__main__.ProjectionTests.test_texture_reprojection_centers) ... ok
+test_changed_file_invalidates_review (__main__.ReviewTests.test_changed_file_invalidates_review) ... ok
+test_check_does_not_auto_approve (__main__.ReviewTests.test_check_does_not_auto_approve) ... ok
+test_transparency_rejected (__main__.ReviewTests.test_transparency_rejected) ... ok
+test_wrong_aspect_rejected (__main__.ReviewTests.test_wrong_aspect_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 7.701s
+
+OK
+
+test_checker_geometry_clips_and_has_single_identity (__main__.FloorProjectionTests.test_checker_geometry_clips_and_has_single_identity) ... ok
+test_invalid_floor_spec_and_render_dimensions (__main__.FloorProjectionTests.test_invalid_floor_spec_and_render_dimensions) ... ok
+test_nadir_material_coordinates_are_affine (__main__.FloorProjectionTests.test_nadir_material_coordinates_are_affine) ... ok
+test_ray_plane_intersections (__main__.FloorProjectionTests.test_ray_plane_intersections) ... ok
+test_roundtrip_planar_checker_matches_direct_perspective (__main__.FloorProjectionTests.test_roundtrip_planar_checker_matches_direct_perspective) ... ok
+test_texture_wraps_on_both_axes (__main__.FloorProjectionTests.test_texture_wraps_on_both_axes) ... ok
+test_complete_release_fixture_and_changed_provenance (__main__.GateTests.test_complete_release_fixture_and_changed_provenance) ... ok
+test_old_review_schema_invalidated_even_same_image (__main__.GateTests.test_old_review_schema_invalidated_even_same_image) ... ok
+test_release_rejects_direct_generation_interior (__main__.GateTests.test_release_rejects_direct_generation_interior) ... ok
+test_surface_evidence_requires_downward_views (__main__.GateTests.test_surface_evidence_requires_downward_views) ... ok
+test_cli_guarded_composite_and_missing_review (__main__.MaskTests.test_cli_guarded_composite_and_missing_review) ... ok
+test_composite_protects_zero_mask_pixels (__main__.MaskTests.test_composite_protects_zero_mask_pixels) ... ok
+test_invalid_mask_rejected (__main__.MaskTests.test_invalid_mask_rejected) ... ok
+test_mask_review_hash_binding (__main__.MaskTests.test_mask_review_hash_binding) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 3.002s
+
+OK

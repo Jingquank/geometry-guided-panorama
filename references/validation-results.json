@@ -1,0 +1,36 @@
+{
+  "revision": "2-floor-topology",
+  "tests": {
+    "existing_passed": 11,
+    "new_passed": 14,
+    "total_passed": 25,
+    "failed": 0
+  },
+  "test_scope": "Deterministic code and record checks; no image-generation quality benchmark.",
+  "observed_source_case": {
+    "dimensions": [
+      1774,
+      887
+    ],
+    "source_sha256": "020dce303635aaafc162b6318a95d8b5dd0f10c13211304cb0950e19b04ced60",
+    "file_validity": "passed",
+    "surface_pattern": "failed_by_visual_inspection",
+    "evidence": "Concentric/wedge-like tile topology in local nadir and oblique pinhole reprojections.",
+    "downstream_tested": false
+  },
+  "control": {
+    "method": "C++ single-center render of clipped Cartesian checker tiles in a closed room",
+    "dimensions": [
+      1536,
+      768
+    ],
+    "inspected": "nadir and oblique floor montage; square/straight lattice visible",
+    "not_final_art": true
+  },
+  "limitations": [
+    "No newly refined hotel panorama produced.",
+    "No production success-rate or speed benchmark.",
+    "Planar utility handles albedo on a horizontal plane, not PBR or automatic scene reconstruction.",
+    "Review/provenance gates check evidence records, not truth of judgments or external model behavior."
+  ]
+}

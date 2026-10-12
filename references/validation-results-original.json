@@ -1,0 +1,31 @@
+{
+  "test_suite": "scripts/self_test.py",
+  "tests_run": 11,
+  "result": "passed",
+  "ai_refinement_tested": false,
+  "original_implementation_audited": false,
+  "environment": {
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "pillow": "12.3.0",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41"
+  },
+  "guide_observations": {
+    "room": {
+      "compiler_check_and_build": 2.3108,
+      "render": 1.1491,
+      "total": 3.5346
+    },
+    "curved": {
+      "compiler_check_and_build": 0.0056,
+      "render": 2.9868,
+      "total": 3.0638
+    },
+    "outdoor": {
+      "compiler_check_and_build": 0.015,
+      "render": 1.8224,
+      "total": 2.0419
+    }
+  },
+  "scope": "Unit/integration tests and example guide smoke tests, not end-to-end AI quality validation."
+}

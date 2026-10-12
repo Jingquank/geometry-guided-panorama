@@ -1,0 +1,49 @@
+{
+  "revision": "execution-and-final-pixel-lock",
+  "pipeline_version": 3,
+  "unit_tests": {
+    "original": {
+      "count": 11,
+      "result": "passed"
+    },
+    "floor": {
+      "count": 14,
+      "result": "passed"
+    },
+    "execution_and_final_pixels": {
+      "count": 20,
+      "result": "passed"
+    },
+    "total": 45
+  },
+  "original_suite_change": "The positive record-only fixture now explicitly uses an unpatterned floor and v3 preflight; regular patterns without a finish are separately required to fail.",
+  "new_regression_examples": [
+    "Missing guide rejected",
+    "Terminal post-generation route rejected",
+    "Prompt-only final operation rejected",
+    "Missing surface finish rejected",
+    "Changed final pixels detected even after output hash is refreshed",
+    "Stale mask and absent full-coverage review rejected",
+    "Broad feathering and calibration-role surfaces rejected"
+  ],
+  "actual_failed_asset": {
+    "sha256": "2da8b9e480de69e8f767f122860c27e99405aa172e3943d580de3c9d2dc48aa9",
+    "size": [
+      1774,
+      887
+    ],
+    "fixed_center_nadir": "failed: rings and wedges",
+    "oblique_montage": "same global defect",
+    "other_checks": "not fully reviewed after early rejection"
+  },
+  "control": "Deterministic planar checker reprojected correctly in nadir; calibration only.",
+  "new_ai_calls": 0,
+  "new_hotel_artwork": false,
+  "downstream_tested": false,
+  "limitations": [
+    "Unit tests verify local code/records, not AI output quality.",
+    "Synthetic tests use explicitly labeled artificial reviews; they are not artwork approval.",
+    "Final pixel equality preserves a supplied render; it cannot prove that render or mask is correct.",
+    "A local script cannot prevent an assistant bypassing it and invoking image generation directly."
+  ]
+}
