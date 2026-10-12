@@ -34,56 +34,51 @@
 
 ## 2. 上传图片，说明你想保留什么
 
-在项目对话里选择 `geometry-guided-panorama`，附上参考图，再描述需求。也可以直接用下面三个示例中的提示词。
+在项目对话里选择 `geometry-guided-panorama`，附上参考图，再描述需求。例如：
+
+```text
+使用 $geometry-guided-panorama，把这张参考图扩展成 360° 全景。
+保留原有结构、材质和光线，保守补全看不到的区域。
+完成全景验收后，交付一张 2:1 PNG。
+```
 
 不用自己写复杂的投影参数。说明**哪些东西必须保留、哪些地方可以改变**就好；没有要求改变的部分，应以原图为准。
 
-## 3. 三个可以直接复制的示例
+## 3. 实际生成示例：Before / After
 
-以下是使用提示词示例，不是已验证的生成结果。每个示例都需要附上对应的参考图。
+以下是本项目实际使用的参考图与生成的全景 PNG。点击图片可以查看完整文件。它们来自此前的生成过程，不代表全部已通过最新版本的验收或下游 3D 重建。
 
-### Example 01 — 阳光厨房
+### Example 01 — 粉色酒店大堂
 
-*附上一张厨房照片。*
+粉色墙面、拱窗与原有棋盘地面的全景扩展。
 
-```text
-使用 $geometry-guided-panorama，把这张厨房图扩展成 360° 全景。
+| Before · 原图 | After · 360° 全景 |
+| --- | --- |
+| [![粉色酒店大堂：原始参考图](assets/examples/pink-lobby-before.png)](assets/examples/pink-lobby-before.png) | [![粉色酒店大堂：生成的 2:1 全景图](assets/examples/pink-lobby-after.png)](assets/examples/pink-lobby-after.png) |
 
-保留原有岛台、柜体、吊灯、植物和木地板，不增加家具或地板花纹。
-重点检查岛台的长边和厚度，以及窗光落在地面和柜体上的形状。
-原图看不到的部分，沿用现有风格保守补全。
+[查看完整全景 PNG](assets/examples/pink-lobby-after.png)
 
-完成全景验收后，交付一张 2:1 PNG。
-```
+### Example 02 — 阳光厨房
 
-### Example 02 — 山林小径
+白色柜体、橡木岛台与木板地面的全景扩展。此版本在 PINOC 重建中仍出现岛台和光带弯曲，是后续迭代的案例。
 
-*附上一张能看到山坡、树木和小径的风景图。*
+| Before · 原图 | After · 360° 全景 |
+| --- | --- |
+| [![阳光厨房：原始参考图](assets/examples/oak-kitchen-before.png)](assets/examples/oak-kitchen-before.png) | [![阳光厨房：生成的 2:1 全景图](assets/examples/oak-kitchen-after.png)](assets/examples/oak-kitchen-after.png) |
 
-```text
-使用 $geometry-guided-panorama，把这张山林图扩展成 360° 全景。
+[查看完整全景 PNG](assets/examples/oak-kitchen-after.png)
 
-保留山坡起伏、树木的不规则形态、小径走向和原有光线。
-不要把地面铺平，也不要增加建筑、道路或重复排列的树木。
-重点检查山脊轮廓、树干连接，以及小径在相邻视角里的连续性。
+### Example 03 — 乡村面包房
 
-完成全景验收后，交付一张 2:1 PNG。
-```
+木梁、拱门与面包陈列的全景扩展。此版本仍有原图小地垫缺失、部分石板尺寸变化。
 
-### Example 03 — 有拱廊的街道
+| Before · 原图 | After · 360° 全景 |
+| --- | --- |
+| [![乡村面包房：原始参考图](assets/examples/bakery-before.png)](assets/examples/bakery-before.png) | [![乡村面包房：生成的 2:1 全景图](assets/examples/bakery-after.png)](assets/examples/bakery-after.png) |
 
-*附上一张建筑街景，画面中包含拱门或曲面建筑。*
+[查看完整全景 PNG](assets/examples/bakery-after.png)
 
-```text
-使用 $geometry-guided-panorama，把这张街景扩展成 360° 全景。
-
-保留建筑立面、拱门、门窗位置和原有路面材质。
-原本笔直的边缘保持笔直，原本弯曲的拱门保留曲线。
-不要复制建筑、添加门窗，或为了方便检查而增加地砖网格。
-重点检查立面形状、街道延续和全景左右接缝。
-
-完成全景验收后，交付一张 2:1 PNG。
-```
+全景图在这里以平面展开图显示；请用支持 2:1 等距柱状投影的查看器体验环视效果。
 
 ## 它会检查什么？
 
